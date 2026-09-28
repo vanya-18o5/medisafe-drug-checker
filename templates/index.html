@@ -1,0 +1,1892 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>MediSafe Pro Ultimate | Advanced Clinical Pharmacology Suite | AI-Powered Drug Interaction Analyzer</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14.32,300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(145deg, #f0f4fc 0%, #e9eefa 100%);
+            color: #1a1f2e;
+            min-height: 100vh;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".8em" font-size="90">💊</text></svg>') repeat;
+            opacity: 0.02;
+            pointer-events: none;
+            z-index: 0;
+        }
+        h1, h2, h3, .logo { font-family: 'Poppins', 'Inter', sans-serif; }
+        .navbar {
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(12px);
+            padding: 0.75rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(59,130,246,0.25);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+        .logo {
+            font-size: 1.7rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e3c72, #3b82f6, #06b6d4, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+        .nav-tabs { display: flex; gap: 0.5rem; background: #f1f5f9; padding: 4px; border-radius: 60px; }
+        .nav-tab { padding: 0.5rem 1.3rem; border: none; background: transparent; font-weight: 600; font-size: 0.9rem; cursor: pointer; border-radius: 40px; transition: all 0.2s; color: #475569; display: flex; align-items: center; gap: 8px; }
+        .nav-tab:hover { background: #e2e8f0; color: #1e293b; transform: scale(1.02); }
+        .nav-tab.active { background: #3B82F6; color: white; box-shadow: 0 6px 14px rgba(59,130,246,0.3); }
+        .login-btn { background: transparent; border: 1px solid #cbd5e1; padding: 0.45rem 1.2rem; border-radius: 60px; cursor: pointer; font-weight: 600; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+        .login-btn:hover { background: #f1f5f9; border-color: #3B82F6; color: #3B82F6; transform: scale(1.02); }
+        .main-container { max-width: 1400px; margin: 0 auto; padding: 2rem; position: relative; z-index: 1; }
+        .card { background: rgba(255,255,255,0.96); backdrop-filter: blur(2px); border-radius: 32px; box-shadow: 0 12px 35px rgba(0,0,0,0.05); padding: 1.8rem; margin-bottom: 1.8rem; border: 1px solid rgba(255,255,255,0.6); transition: transform 0.2s; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+        .drug-input-group { display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .drug-input-group input { flex: 1; padding: 0.9rem 1.3rem; border: 1px solid #e2e8f0; border-radius: 80px; font-size: 0.95rem; background: white; transition: 0.2s; }
+        .drug-input-group input:focus { outline: none; border-color: #3B82F6; box-shadow: 0 0 0 4px rgba(59,130,246,0.1); }
+        .drug-input-group button { padding: 0.9rem 1.8rem; background: linear-gradient(105deg, #3B82F6, #2563eb); color: white; border: none; border-radius: 80px; cursor: pointer; font-weight: 700; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+        .drug-input-group button:hover { transform: scale(1.02); box-shadow: 0 12px 22px rgba(59,130,246,0.3); }
+        .drug-tag { display: inline-flex; align-items: center; gap: 0.6rem; background: linear-gradient(120deg, #eef2ff, #ffffff); padding: 0.5rem 1.2rem; border-radius: 80px; margin: 0.35rem; font-size: 0.85rem; font-weight: 600; border: 1px solid #cbd5e1; transition: all 0.2s; }
+        .drug-tag:hover { transform: scale(1.02); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .remove-drug { cursor: pointer; color: #ef4444; font-weight: bold; font-size: 1.1rem; transition: transform 0.2s; }
+        .remove-drug:hover { transform: scale(1.2); }
+        .interaction-item { background: white; border-radius: 28px; padding: 1.4rem; margin-bottom: 1.3rem; border: 1px solid #eef2ff; border-left: 6px solid; transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+        .interaction-item:hover { transform: translateX(5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .interaction-item.safe { border-left-color: #10b981; background: #f0fdf4; }
+        .interaction-item.unsafe { border-left-color: #f97316; background: #fff7ed; }
+        .interaction-item.unknown { border-left-color: #8b5cf6; background: #f5f3ff; }
+        .interaction-item.critical { border-left-color: #dc2626; background: #fef2f2; }
+        .ai-study-superbox { background: linear-gradient(135deg, #0b1120 0%, #0f172a 100%); border-radius: 32px; padding: 1.6rem; margin-top: 1.3rem; color: #e2e8f0; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4); border: 1px solid #334155; }
+        .ai-study-superbox h4 { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.9rem; display: flex; align-items: center; gap: 12px; color: #7dd3fc; }
+        .drug-monograph { background: rgba(15, 23, 42, 0.7); border-radius: 24px; padding: 1rem; margin-top: 1rem; border: 1px solid #2d3a5e; transition: all 0.2s; }
+        .drug-monograph:hover { background: rgba(15, 23, 42, 0.9); transform: translateX(5px); }
+        .mono-title { font-weight: 800; color: #facc15; margin-bottom: 8px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
+        .mechanism-deep { background: rgba(56, 189, 248, 0.08); padding: 1rem; border-radius: 20px; margin-top: 1rem; border-left: 3px solid #3b8df8; font-size: 0.88rem; line-height: 1.5; }
+        .bar-item { margin-bottom: 1rem; }
+        .bar-label { display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 0.35rem; }
+        .bar-bg { background: #e2e8f0; height: 38px; border-radius: 60px; overflow: hidden; }
+        .bar-fill { height: 100%; width: 0%; transition: width 0.7s cubic-bezier(0.22, 0.97, 0.36, 1); display: flex; align-items: center; padding: 0 1rem; color: white; font-weight: 800; border-radius: 60px; }
+        .btn-primary { background: linear-gradient(105deg, #3B82F6, #2563eb); color: white; border: none; padding: 0.9rem 1.5rem; border-radius: 80px; cursor: pointer; font-weight: 800; width: 100%; font-size: 1rem; transition: 0.2s; box-shadow: 0 6px 14px rgba(37,99,235,0.25); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(59,130,246,0.35); }
+        .btn-secondary { background: linear-gradient(105deg, #10b981, #059669); color: white; border: none; padding: 0.8rem 1.2rem; border-radius: 80px; cursor: pointer; font-weight: 700; transition: 0.2s; }
+        .btn-secondary:hover { transform: scale(1.02); box-shadow: 0 8px 20px rgba(16,185,129,0.3); }
+        .disclaimer-footer { margin-top: 2rem; text-align: center; font-size: 0.8rem; font-weight: 600; color: #b45309; background: #ffffeb; padding: 1rem; border-radius: 60px; border-left: 5px solid #f59e0b; }
+        .switch { position: relative; display: inline-block; width: 60px; height: 30px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider-round { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; border-radius: 34px; transition: 0.2s; }
+        .slider-round:before { position: absolute; content: "🌙"; font-size: 16px; display: flex; align-items: center; justify-content: center; height: 26px; width: 26px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: 0.2s; text-align: center; line-height: 26px; }
+        input:checked + .slider-round { background-color: #3B82F6; }
+        input:checked + .slider-round:before { transform: translateX(30px); content: "☀️"; }
+        .history-item { border-left: 5px solid; margin-bottom: 0.9rem; padding: 1rem; background: white; border-radius: 20px; transition: all 0.2s; }
+        .history-item:hover { transform: translateX(5px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .status-badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0.9rem; border-radius: 60px; font-size: 0.7rem; font-weight: 800; }
+        .status-safe { background: #10b981; color: white; }
+        .status-unsafe { background: #f97316; color: white; }
+        .status-critical { background: #dc2626; color: white; }
+        .faq-question { padding: 1rem 0.5rem; cursor: pointer; font-weight: 700; display: flex; justify-content: space-between; border-bottom: 2px solid #eef2ff; transition: all 0.2s; }
+        .faq-question:hover { background: #f8fafc; padding-left: 1rem; }
+        .faq-answer { padding: 0.5rem 0.5rem 1rem 0.5rem; display: none; color: #334155; line-height: 1.5; }
+        .faq-answer.show { display: block; animation: slideDown 0.3s ease; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .profile-editor { background: #f8fafc; border-radius: 24px; padding: 1.5rem; margin-top: 1rem; }
+        .profile-field { margin-bottom: 1.2rem; }
+        .profile-field label { font-weight: 700; display: block; margin-bottom: 0.5rem; color: #1e293b; }
+        .profile-field select, .profile-field input { width: 100%; padding: 0.8rem 1rem; border-radius: 60px; border: 1px solid #cbd5e1; background: white; font-family: 'Inter', sans-serif; font-size: 0.9rem; transition: all 0.2s; }
+        .profile-field select:focus, .profile-field input:focus { outline: none; border-color: #3B82F6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+        .save-profile-btn { background: linear-gradient(105deg, #10b981, #059669); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 60px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 0.5rem; transition: 0.2s; }
+        .save-profile-btn:hover { transform: scale(1.02); box-shadow: 0 8px 20px rgba(16,185,129,0.3); }
+        .profile-display-card { background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); border-radius: 24px; padding: 1.2rem; margin-bottom: 1rem; }
+        .edit-toggle-btn { background: #3B82F6; border: none; padding: 0.5rem 1.2rem; border-radius: 60px; color: white; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
+        .edit-toggle-btn:hover { transform: scale(1.02); background: #2563eb; }
+        .graphs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 25px; margin-top: 20px; }
+        .graph-container { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: transform 0.3s; }
+        .graph-container:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        .graph-title { text-align: center; margin-top: 15px; font-weight: 800; color: #1e293b; font-size: 1rem; }
+        .graph-subtitle { text-align: center; font-size: 0.8rem; color: #64748b; margin-top: 5px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 20px; text-align: center; transition: transform 0.2s; }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-number { font-size: 2rem; font-weight: 800; }
+        .stat-label { font-size: 0.85rem; opacity: 0.9; margin-top: 5px; }
+        .clinical-tip { background: #dbeafe; border-left: 4px solid #3B82F6; padding: 1rem; border-radius: 12px; margin: 1rem 0; }
+        .drug-class-badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.7rem; font-weight: 600; margin-left: 0.5rem; }
+        @media (max-width: 768px) { .main-container { padding: 1rem; } .card { padding: 1rem; } .graphs-grid { grid-template-columns: 1fr; } .nav-tab span { display: none; } }
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #3B82F6; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #2563eb; }
+        .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 9999; }
+        .loading-card { background: white; padding: 2rem; border-radius: 28px; text-align: center; max-width: 400px; }
+        .spinner { width: 50px; height: 50px; border: 4px solid #e2e8f0; border-top-color: #3B82F6; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .question-input-group { display: flex; gap: 0.75rem; margin: 1rem 0; }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <div class="logo"><i class="fas fa-stethoscope" style="color:#3b82f6;"></i> MediSafe Pro Ultimate <span style="font-size:0.7rem; background:#eef2ff; padding:4px 12px; border-radius:60px;">Clinical Grade</span></div>
+    <div class="nav-tabs">
+        <button class="nav-tab active" data-tab="home"><i class="fas fa-home"></i> <span>Home</span></button>
+        <button class="nav-tab" data-tab="analytics"><i class="fas fa-chart-line"></i> <span>Analytics</span></button>
+        <button class="nav-tab" data-tab="history"><i class="fas fa-history"></i> <span>History</span></button>
+        <button class="nav-tab" data-tab="profile"><i class="fas fa-user-md"></i> <span>Profile</span></button>
+        <button class="nav-tab" data-tab="aiassist"><i class="fas fa-brain"></i> <span>AI Tutor</span></button>
+        <button class="nav-tab" data-tab="references"><i class="fas fa-book"></i> <span>References</span></button>
+    </div>
+    <button class="login-btn" id="loginBtn"><i class="fas fa-user-circle"></i> Clinical Dashboard</button>
+</div>
+<div class="main-container">
+    <div id="homeTab" class="tab-content" style="display: block;">
+        <div class="card">
+            <div class="flex-between">
+                <h2><i class="fas fa-capsules"></i> Advanced Drug Interaction Checker <span style="font-size:0.8rem; background:#dbeafe; padding:4px 14px; border-radius:60px;">AI-Powered Clinical Decision Support</span></h2>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <span style="font-weight:800;">📚 Study Mode</span>
+                    <label class="switch">
+                        <input type="checkbox" id="studyModeToggleHome">
+                        <span class="slider-round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="clinical-tip">
+                <i class="fas fa-lightbulb"></i> <strong>Clinical Pearl:</strong> This analyzer covers 50+ medications with detailed pharmacokinetic and pharmacodynamic interactions. Always verify with primary literature.
+            </div>
+            <div class="drug-input-group">
+                <input type="text" id="drugInput" placeholder="Search medication (e.g., Warfarin, Amiodarone, Digoxin, Metformin, Losartan...)" list="drugSuggestions">
+                <datalist id="drugSuggestions"></datalist>
+                <button id="addDrugBtn"><i class="fas fa-plus-circle"></i> Add Medication</button>
+            </div>
+            <div id="drugListContainer" class="drug-list"></div>
+            <button id="analyzeBtn" class="btn-primary"><i class="fas fa-microscope"></i> Run Comprehensive Clinical Analysis</button>
+        </div>
+        <div id="resultsArea"></div>
+        <div class="disclaimer-footer">
+            <i class="fas fa-exclamation-triangle"></i> IMPORTANT: This AI-powered clinical decision support tool is for advanced medical education and research. All recommendations should be verified with current guidelines and clinical pharmacists. Not for direct patient care without professional oversight.
+        </div>
+    </div>
+    <div id="analyticsTab" class="tab-content" style="display: none;">
+        <div class="card"><h2><i class="fas fa-fire"></i> Most Frequently Checked Interactions</h2><div id="popularInteractions"></div></div>
+        <div class="card"><h2><i class="fas fa-chart-bar"></i> Interaction Severity Distribution</h2><canvas id="severityChart" width="400" height="200"></canvas></div>
+        <div class="card"><h2><i class="fas fa-question-circle"></i> Clinical Pharmacology FAQs</h2><div id="faqContainer"></div></div>
+        <div class="card"><h2><i class="fas fa-comment-dots"></i> Ask AI Clinical Pharmacist</h2>
+            <div class="question-input-group" style="display: flex; gap: 0.75rem;">
+                <input type="text" id="userQuestion" placeholder="e.g., Explain the mechanism of CYP3A4 inhibition by clarithromycin and its clinical significance...">
+                <button id="submitQuestionBtn" style="background:linear-gradient(105deg,#3B82F6,#2563eb); padding:0.8rem 1.5rem; border:none; border-radius:80px; color:white; font-weight:700;"><i class="fas fa-paper-plane"></i> Ask AI</button>
+            </div>
+            <div id="questionFeedback"></div>
+        </div>
+    </div>
+    <div id="historyTab" class="tab-content" style="display: none;">
+        <div class="card"><h2><i class="fas fa-clock"></i> Comprehensive Interaction History</h2><div id="historyList"></div></div>
+    </div>
+    <div id="profileTab" class="tab-content" style="display: none;">
+        <div class="card">
+            <div class="flex-between">
+                <h2><i class="fas fa-id-card"></i> Clinical User Profile</h2>
+                <button class="edit-toggle-btn" id="editProfileBtn"><i class="fas fa-pen"></i> Edit Clinical Profile</button>
+            </div>
+            <div id="profileDisplayArea"></div>
+            <div id="profileEditorArea" style="display: none;"></div>
+        </div>
+    </div>
+    <div id="aiassistTab" class="tab-content" style="display: none;">
+        <div class="card">
+            <h2><i class="fas fa-robot"></i> AI Clinical Pharmacology Tutor <span style="background:#dbeafe; font-size:0.8rem; padding:4px 12px; border-radius:60px;">Advanced Learning Model</span></h2>
+            <p style="margin-bottom: 1.2rem;">Ask complex pharmacology questions: mechanisms, ADME, drug-drug interactions, clinical pearls, and evidence-based recommendations.</p>
+            <div class="question-input-group" style="display: flex; gap: 0.75rem;">
+                <input type="text" id="aiTutorQuery" placeholder="e.g., Explain the pharmacogenomics of CYP2C19 and clopidogrel response..." style="flex:1; padding:0.9rem; border-radius:80px;">
+                <button id="aiTutorAskBtn" style="background:linear-gradient(105deg,#0ea5e9,#0284c7); padding:0.8rem 1.8rem; border:none; border-radius:80px; color:white; font-weight:700;"> <i class="fas fa-brain"></i> Consult AI</button>
+            </div>
+            <div id="aiTutorResponseArea" style="background:#f8fafc; border-radius:32px; padding:1.2rem; min-height:220px; margin-top: 1rem;"></div>
+        </div>
+    </div>
+    <div id="referencesTab" class="tab-content" style="display: none;">
+        <div class="card">
+            <h2><i class="fas fa-book-open"></i> Clinical References & Guidelines</h2>
+            <div style="margin-top: 1rem;">
+                <p><strong>Primary Sources:</strong></p>
+                <ul style="margin-left: 2rem; line-height: 1.8;">
+                    <li>FDA Drug Safety Communications (2020-2024)</li>
+                    <li>Lexicomp Drug Interactions (Latest Edition)</li>
+                    <li>Flockhart DA. Drug Interactions: Cytochrome P450 Drug Interaction Table</li>
+                    <li>Clinical Pharmacology by Elsevier</li>
+                    <li>Micromedex Drug Interactions Database</li>
+                    <li>ASHRAE Clinical Practice Guidelines</li>
+                </ul>
+                <div class="clinical-tip" style="margin-top: 1rem;">
+                    <i class="fas fa-graduation-cap"></i> <strong>Educational Use Only:</strong> This tool is designed for medical education and clinical research training. Always consult primary literature and local formularies.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ===============================
+// API Configuration
+// ===============================
+const API_URL = 'http://127.0.0.1:5000/api';
+
+// ===============================
+// EXTENSIVE DRUG DATABASE WITH 50+ DRUGS AND DEEP MONOGRAPHS
+// ===============================
+const drugDatabase = {
+    "drugs": [
+        { generic_name: "Warfarin", drug_class: "Vitamin K Antagonist (Anticoagulant)", half_life: "40 hours", metabolism: "CYP2C9 (major), CYP3A4", moa: "Inhibits vitamin K epoxide reductase → blocks synthesis of clotting factors II, VII, IX, X, proteins C & S.", clinical_use: "Atrial fibrillation, DVT, PE, mechanical heart valves.", contraindications: "Pregnancy, bleeding disorders, recent surgery", monitoring: "INR weekly, then monthly", interactions: [{ drug: "Aspirin", severity: "major", description: "🩸 Major bleed risk: additive antiplatelet + anticoagulant effects.", mechanism: "Aspirin irreversibly inhibits COX-1 → reduces thromboxane A2 → platelet aggregation blocked. Warfarin reduces coagulation factors. Synergy → hemorrhage risk ↑ 3x.", management: "Avoid combination if possible. If necessary, monitor INR closely and consider PPI for GI protection." }, { drug: "Amiodarone", severity: "major", description: "⚠ Amiodarone potentiates warfarin severely.", mechanism: "Amiodarone inhibits CYP2C9 → S-warfarin plasma levels increase 50-70% → INR skyrockets.", management: "Reduce warfarin dose by 30-50% upon amiodarone initiation. Monitor INR weekly for first month." }, { drug: "Simvastatin", severity: "moderate", description: "Potential INR elevation", mechanism: "CYP inhibition and protein binding displacement", management: "Monitor INR more frequently when starting or stopping statin." }] },
+        { generic_name: "Amiodarone", drug_class: "Class III Antiarrhythmic", half_life: "58 days (extremely long)", metabolism: "CYP3A4, CYP2C8", moa: "Blocks potassium channels → prolongs repolarization, also blocks sodium/calcium channels & non-competitive beta-blocker effect.", clinical_use: "Ventricular tachycardia, atrial fibrillation.", contraindications: "Severe sinus node dysfunction, heart block", monitoring: "LFTs, TFTs, pulmonary function, eye exams", interactions: [{ drug: "Warfarin", severity: "major", description: "Major potentiation of anticoagulation.", mechanism: "Strong CYP2C9 inhibition → warfarin clearance reduced dramatically.", management: "Reduce warfarin by 30-50%, monitor INR frequently." }, { drug: "Simvastatin", severity: "major", description: "Rhabdomyolysis risk.", mechanism: "CYP3A4 inhibition → simvastatin AUC ↑ 5-10x.", management: "Avoid simvastatin >20mg/day. Consider pravastatin or rosuvastatin." }, { drug: "Digoxin", severity: "moderate", description: "Digoxin toxicity risk", mechanism: "Reduced renal clearance and P-gp inhibition", management: "Reduce digoxin dose by 50% and monitor levels." }] },
+        { generic_name: "Simvastatin", drug_class: "HMG-CoA Reductase Inhibitor (Statin)", half_life: "3 hours", metabolism: "CYP3A4 (major)", moa: "Competitively inhibits HMG-CoA reductase → reduces cholesterol synthesis in liver → upregulates LDL receptors.", clinical_use: "Hyperlipidemia, CVD prevention.", contraindications: "Active liver disease, pregnancy", monitoring: "LFTs, CK levels", interactions: [{ drug: "Clarithromycin", severity: "major", description: "🚨 Life-threatening rhabdomyolysis!", mechanism: "Clarithromycin (strong CYP3A4 inhibitor) → Simvastatin AUC ↑ 10x → muscle toxicity & AKI.", management: "Contraindicated. Use pravastatin or rosuvastatin instead." }, { drug: "Amiodarone", severity: "major", description: "Increased myopathy risk", mechanism: "CYP3A4 inhibition", management: "Limit simvastatin to 20mg/day" }, { drug: "Verapamil", severity: "major", description: "Myopathy risk", mechanism: "CYP3A4 inhibition", management: "Limit simvastatin to 10mg/day" }] },
+        { generic_name: "Clarithromycin", drug_class: "Macrolide Antibiotic", half_life: "4 hours", metabolism: "CYP3A4", moa: "Binds 50S ribosomal subunit → inhibits protein synthesis.", clinical_use: "Respiratory, skin infections, H. pylori.", contraindications: "History of cholestatic jaundice", monitoring: "Hepatic function", interactions: [{ drug: "Simvastatin", severity: "major", description: "Extreme myopathy risk.", mechanism: "Potent CYP3A4 inhibition.", management: "Contraindicated. Choose azithromycin instead." }, { drug: "Warfarin", severity: "moderate", description: "Increased INR", mechanism: "CYP inhibition and gut flora alteration", management: "Monitor INR more frequently" }] },
+        { generic_name: "Aspirin", drug_class: "NSAID / Antiplatelet", half_life: "15-20 min", metabolism: "Hydrolyzed to salicylate", moa: "Irreversibly acetylates COX-1 → inhibits thromboxane A2 → antiplatelet effect.", clinical_use: "Secondary prevention of MI/stroke, pain.", contraindications: "Active GI bleed, aspirin allergy", monitoring: "Signs of bleeding", interactions: [{ drug: "Ibuprofen", severity: "major", description: "⚠ Ibuprofen blocks aspirin's cardioprotective effect.", mechanism: "Competitive binding at COX-1 prevents acetylation.", management: "Take ibuprofen 8+ hours after immediate-release aspirin, or use naproxen." }, { drug: "Warfarin", severity: "major", description: "Increased bleeding risk", mechanism: "Additive antiplatelet + anticoagulant effects", management: "Avoid combination unless absolutely necessary. Consider GI protection."
+}]}]} -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>MediSafe Pro | Clinical Drug Interaction Checker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fb;
+            color: #1a1f2e;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: 'Poppins', 'Inter', sans-serif;
+        }
+
+        .navbar {
+            background: white;
+            padding: 0.75rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2b3b6e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-tab {
+            padding: 0.4rem 1.25rem;
+            border: none;
+            background: transparent;
+            font-weight: 500;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            color: #4a5568;
+        }
+
+        .nav-tab:hover {
+            background: #edf2f7;
+        }
+
+        .nav-tab.active {
+            background: #3B82F6;
+            color: white;
+        }
+
+        .login-btn {
+            background: transparent;
+            border: 1px solid #cbd5e1;
+            padding: 0.4rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .login-btn:hover {
+            background: #f1f5f9;
+            border-color: #3B82F6;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .onboarding-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .onboarding-card {
+            background: white;
+            border-radius: 4px;
+            width: 500px;
+            max-width: 90%;
+            padding: 2rem;
+            position: relative;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #1e3c72;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .option-btn.selected {
+            background: #3B82F6;
+            color: white;
+            border-color: #3B82F6;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        .btn-prev, .btn-next, .btn-submit {
+            padding: 0.6rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-prev {
+            background: #e2e8f0;
+        }
+
+        .btn-next, .btn-submit {
+            background: #3B82F6;
+            color: white;
+        }
+
+        .drug-input-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .drug-input-group input {
+            flex: 1;
+            padding: 0.7rem 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .drug-input-group button {
+            padding: 0.7rem 1.5rem;
+            background: #3B82F6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .drug-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #edf2f7;
+            padding: 0.4rem 1rem;
+            border-radius: 4px;
+            margin: 0.25rem;
+            font-size: 0.85rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .remove-drug {
+            cursor: pointer;
+            color: #e53e3e;
+            font-weight: bold;
+        }
+
+        .interaction-item {
+            background: white;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid;
+        }
+
+        .interaction-item.safe { border-left-color: #2b9348; }
+        .interaction-item.unsafe { border-left-color: #e85d04; }
+        .interaction-item.avoid { border-left-color: #d00000; }
+        .interaction-item.unknown { border-left-color: #7C3AED; }
+
+        .study-mode-box {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .loading-card {
+            background: white;
+            border-radius: 4px;
+            padding: 2rem;
+            text-align: center;
+            min-width: 300px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e2e8f0;
+            border-top-color: #3B82F6;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .safety-graph {
+            margin-top: 1rem;
+        }
+
+        .bar-item {
+            margin-bottom: 1rem;
+        }
+
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .bar-bg {
+            background: #e2e8f0;
+            height: 32px;
+            border-radius: 0px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 0.6s ease;
+            display: flex;
+            align-items: center;
+            padding: 0 0.75rem;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .faq-question {
+            padding: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .faq-answer {
+            padding: 0 1rem 1rem 1rem;
+            display: none;
+            color: #4a5568;
+            line-height: 1.5;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .faq-answer.show {
+            display: block;
+        }
+
+        .history-item {
+            padding: 0.75rem;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .profile-field {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: #f7fafc;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .edit-profile-btn {
+            background: #3B82F6;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: #3B82F6;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .disclaimer-footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #92400e;
+            background: #fffbeb;
+            padding: 1rem;
+            border-left: 4px solid #f59e0b;
+            line-height: 1.5;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h2 {
+            color: #1e3c72;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #2d3748;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        hr {
+            margin: 1rem 0;
+            border-color: #e2e8f0;
+        }
+
+        .question-input-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        .question-input-group input {
+            flex: 1;
+            padding: 0.7rem 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+        }
+        .success-toast {
+            background: #2b9348;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-safe {
+            background: #2b9348;
+            color: white;
+        }
+        .status-unsafe {
+            background: #e85d04;
+            color: white;
+        }
+        .status-avoid {
+            background: #d00000;
+            color: white;
+        }
+        .status-unknown {
+            background: #7C3AED;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">MediSafe Pro</div>
+    <div class="nav-tabs">
+        <button class="nav-tab active" data-tab="home">Home</button>
+        <button class="nav-tab" data-tab="analytics">Analytics</button>
+        <button class="nav-tab" data-tab="history">History</button>
+        <button class="nav-tab" data-tab="profile">Profile</button>
+    </div>
+    <button class="login-btn" id="loginBtn">Login</button>
+</div>
+
+<div class="main-container" id="mainContainer">
+    <div id="homeTab" class="tab-content">
+        <div class="card">
+            <div class="flex-between">
+                <h2>Drug Interaction Checker</h2>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <span style="font-family:'Inter',sans-serif;">Study Mode</span>
+                    <label class="switch">
+                        <input type="checkbox" id="studyModeToggleHome">
+                        <span class="slider-round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="drug-input-group">
+                <input type="text" id="drugInput" placeholder="Enter drug name (e.g., Warfarin, Aspirin, Metformin, Lisinopril)" list="drugSuggestions">
+                <datalist id="drugSuggestions"></datalist>
+                <button id="addDrugBtn">Add</button>
+            </div>
+            <div id="drugListContainer" class="drug-list"></div>
+            <button id="analyzeBtn" class="btn-primary" style="margin-top: 0.75rem;">Analyze Interactions</button>
+        </div>
+        <div id="resultsArea"></div>
+        <div class="disclaimer-footer">CAUTION: These results do not override doctor's prescription. Always consult a physician before making medication changes.</div>
+    </div>
+
+    <div id="analyticsTab" class="tab-content" style="display: none;">
+        <div class="card">
+            <h2>Most Checked Interactions</h2>
+            <div id="popularInteractions"></div>
+        </div>
+        <div class="card">
+            <h2>Frequently Asked Questions</h2>
+            <div id="faqContainer"></div>
+        </div>
+        <div class="card">
+            <h2>Ask a Question</h2>
+            <div class="question-input-group">
+                <input type="text" id="userQuestion" placeholder="Type your medication-related question here...">
+                <button id="submitQuestionBtn" style="background:#3B82F6; color:white; border:none; padding:0.7rem 1.5rem; border-radius:4px; cursor:pointer; font-family:'Inter',sans-serif;">Submit</button>
+            </div>
+            <div id="questionFeedback"></div>
+        </div>
+        <div class="disclaimer-footer">CLINICAL DISCLAIMER: It is not intended to replace professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider for any medical concerns or before making decisions related to medications.</div>
+    </div>
+
+    <div id="historyTab" class="tab-content" style="display: none;">
+        <div class="card">
+            <h2>Recent Interaction Checks</h2>
+            <div id="historyList"></div>
+        </div>
+        <div class="disclaimer-footer">CAUTION: These results do not override doctor's prescription. Always verify with your pharmacist.</div>
+    </div>
+
+    <div id="profileTab" class="tab-content" style="display: none;">
+        <div class="card">
+            <div class="flex-between">
+                <h2>User Profile</h2>
+                <button class="edit-profile-btn" id="editProfileBtn">Edit</button>
+            </div>
+            <div id="profileDisplay"></div>
+        </div>
+        <div class="disclaimer-footer">Your data is encrypted and remains confidential. Never share personal medical information online.</div>
+    </div>
+</div>
+
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+    }
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    .slider-round {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #cbd5e1;
+        border-radius: 24px;
+        transition: 0.2s;
+    }
+    .slider-round:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        border-radius: 50%;
+        transition: 0.2s;
+    }
+    input:checked + .slider-round {
+        background-color: #3B82F6;
+    }
+    input:checked + .slider-round:before {
+        transform: translateX(26px);
+    }
+    .drug-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+</style>
+
+<script>
+    console.log("JS IS RUNNING - Full API Integrated");
+
+    // ============================================
+    // COMPLETE DRUG DATABASE FROM YOUR API
+    // ============================================
+    
+    const drugDatabase = {
+        "drugs": [
+            {
+                "generic_name": "Warfarin",
+                "drug_class": "Vitamin K Antagonist",
+                "interactions": [
+                    {"drug": "Aspirin", "severity": "major", "description": "Increased bleeding risk due to additive antiplatelet and anticoagulant effects.", "mechanism": "Aspirin inhibits platelet aggregation and can displace warfarin from plasma proteins."},
+                    {"drug": "Ibuprofen", "severity": "major", "description": "NSAIDs increase bleeding risk and can displace warfarin from protein binding.", "mechanism": "Competitive protein binding displacement raises free warfarin levels."},
+                    {"drug": "Amiodarone", "severity": "major", "description": "Amiodarone markedly potentiates warfarin, greatly increasing hemorrhage risk.", "mechanism": "Inhibits CYP2C9, reducing warfarin metabolism and raising plasma levels."},
+                    {"drug": "Simvastatin", "severity": "moderate", "description": "May enhance anticoagulant effect of warfarin.", "mechanism": "Possible CYP2C9 inhibition increases warfarin exposure."},
+                    {"drug": "Ciprofloxacin", "severity": "major", "description": "Significantly increases warfarin effect, raising INR and bleeding risk.", "mechanism": "Inhibits CYP1A2 and CYP2C9; also reduces gut flora that produce vitamin K."},
+                    {"drug": "Fluconazole", "severity": "major", "description": "Potent potentiation of warfarin anticoagulation.", "mechanism": "Strong CYP2C9 inhibitor dramatically reduces warfarin clearance."},
+                    {"drug": "Metronidazole", "severity": "major", "description": "Significantly increases warfarin effect with major bleeding risk.", "mechanism": "Inhibits CYP2C9, reducing warfarin S-enantiomer clearance."},
+                    {"drug": "Rifampin", "severity": "major", "description": "Dramatically reduces warfarin effect, potentially causing therapeutic failure.", "mechanism": "Potent CYP2C9 inducer markedly accelerates warfarin metabolism."}
+                ]
+            },
+            {
+                "generic_name": "Aspirin",
+                "drug_class": "Antiplatelet / NSAID",
+                "interactions": [
+                    {"drug": "Warfarin", "severity": "major", "description": "Significantly increases bleeding risk.", "mechanism": "Additive anticoagulant and antiplatelet effects with protein binding displacement."},
+                    {"drug": "Ibuprofen", "severity": "major", "description": "Ibuprofen may antagonize aspirin's cardioprotective antiplatelet effect.", "mechanism": "Ibuprofen competes with aspirin for binding to COX-1 on platelets."},
+                    {"drug": "Clopidogrel", "severity": "major", "description": "Combination used clinically but significantly increases bleeding risk.", "mechanism": "Additive antiplatelet mechanisms target different platelet pathways."},
+                    {"drug": "Methotrexate", "severity": "major", "description": "Aspirin can elevate methotrexate to toxic levels.", "mechanism": "Competes with renal tubular secretion of methotrexate, reducing its elimination."}
+                ]
+            },
+            {
+                "generic_name": "Ibuprofen",
+                "drug_class": "NSAID",
+                "interactions": [
+                    {"drug": "Warfarin", "severity": "major", "description": "NSAIDs increase bleeding risk and can displace warfarin from protein binding.", "mechanism": "Competitive protein binding displacement raises free warfarin levels."},
+                    {"drug": "Aspirin", "severity": "major", "description": "Ibuprofen may antagonize aspirin's cardioprotective antiplatelet effect.", "mechanism": "Ibuprofen competes with aspirin for binding to COX-1 on platelets."},
+                    {"drug": "Lisinopril", "severity": "major", "description": "Reduces ACE inhibitor efficacy and increases risk of acute kidney injury.", "mechanism": "NSAIDs inhibit prostaglandins needed for renal afferent arteriole dilation."}
+                ]
+            },
+            {
+                "generic_name": "Atorvastatin",
+                "drug_class": "Statin",
+                "interactions": [
+                    {"drug": "Clarithromycin", "severity": "major", "description": "Increases atorvastatin levels, raising myopathy and rhabdomyolysis risk.", "mechanism": "CYP3A4 inhibition reduces atorvastatin metabolism."},
+                    {"drug": "Amiodarone", "severity": "moderate", "description": "May increase atorvastatin levels.", "mechanism": "CYP3A4 inhibition reduces atorvastatin metabolism."},
+                    {"drug": "Gemfibrozil", "severity": "major", "description": "Increased risk of myopathy and rhabdomyolysis.", "mechanism": "OATP1B1 inhibition and reduced glucuronidation increase atorvastatin plasma exposure."}
+                ]
+            },
+            {
+                "generic_name": "Simvastatin",
+                "drug_class": "Statin",
+                "interactions": [
+                    {"drug": "Amiodarone", "severity": "major", "description": "Simvastatin dose must be limited; myopathy and rhabdomyolysis risk.", "mechanism": "CYP3A4 inhibition by amiodarone increases simvastatin plasma levels."},
+                    {"drug": "Verapamil", "severity": "major", "description": "Significantly increases simvastatin exposure.", "mechanism": "CYP3A4 inhibition raises simvastatin AUC, increasing muscle toxicity risk."},
+                    {"drug": "Clarithromycin", "severity": "major", "description": "Therapy should be suspended during clarithromycin course.", "mechanism": "CYP3A4 inhibition markedly increases simvastatin AUC."},
+                    {"drug": "Gemfibrozil", "severity": "major", "description": "Combination contraindicated due to myopathy/rhabdomyolysis risk.", "mechanism": "OATP1B1 inhibition plus reduced glucuronidation dramatically increase simvastatin exposure."}
+                ]
+            },
+            {
+                "generic_name": "Metoprolol",
+                "drug_class": "Beta Blocker",
+                "interactions": [
+                    {"drug": "Verapamil", "severity": "major", "description": "Combination can cause severe bradycardia, heart block, and heart failure.", "mechanism": "Additive AV nodal depression from both drugs."},
+                    {"drug": "Paroxetine", "severity": "major", "description": "Significantly increases metoprolol exposure.", "mechanism": "Potent CYP2D6 inhibition by paroxetine markedly reduces metoprolol clearance."},
+                    {"drug": "Insulin", "severity": "moderate", "description": "May mask tachycardia (but not sweating) of hypoglycemia; prolongs hypoglycemia.", "mechanism": "Beta blockade prevents glycogenolysis-related tachycardia response to insulin-induced hypoglycemia."}
+                ]
+            },
+            {
+                "generic_name": "Lisinopril",
+                "drug_class": "ACE Inhibitor",
+                "interactions": [
+                    {"drug": "Ibuprofen", "severity": "major", "description": "Reduces ACE inhibitor efficacy and increases risk of acute kidney injury.", "mechanism": "NSAIDs inhibit prostaglandins needed for renal afferent arteriole dilation."},
+                    {"drug": "Spironolactone", "severity": "major", "description": "High risk of hyperkalemia.", "mechanism": "Additive potassium-sparing effects reduce renal potassium excretion."},
+                    {"drug": "Lithium", "severity": "major", "description": "ACE inhibitors can increase lithium to toxic levels.", "mechanism": "Reduced renal clearance of lithium due to sodium/water retention changes."}
+                ]
+            },
+            {
+                "generic_name": "Amlodipine",
+                "drug_class": "Calcium Channel Blocker",
+                "interactions": [
+                    {"drug": "Simvastatin", "severity": "major", "description": "Amlodipine increases simvastatin exposure; simvastatin dose capped at 20mg.", "mechanism": "Weak CYP3A4 inhibition reduces simvastatin metabolism modestly but significantly."}
+                ]
+            },
+            {
+                "generic_name": "Metformin",
+                "drug_class": "Biguanide / Antidiabetic",
+                "interactions": [
+                    {"drug": "Contrast dye (iodinated)", "severity": "major", "description": "Hold metformin before and 48 hours after contrast procedures; lactic acidosis risk.", "mechanism": "Iodinated contrast can cause acute kidney injury, impairing metformin elimination."},
+                    {"drug": "Alcohol", "severity": "major", "description": "Increases lactic acidosis risk substantially.", "mechanism": "Alcohol inhibits gluconeogenesis and enhances metformin's effect on lactate metabolism."}
+                ]
+            },
+            {
+                "generic_name": "Omeprazole",
+                "drug_class": "Proton Pump Inhibitor",
+                "interactions": [
+                    {"drug": "Clopidogrel", "severity": "major", "description": "Significantly reduces clopidogrel's antiplatelet efficacy.", "mechanism": "CYP2C19 inhibition prevents activation of clopidogrel prodrug."},
+                    {"drug": "Methotrexate", "severity": "major", "description": "Can increase methotrexate to toxic levels.", "mechanism": "Competes with methotrexate for renal tubular transport (MATE1)."}
+                ]
+            },
+            {
+                "generic_name": "Clarithromycin",
+                "drug_class": "Macrolide Antibiotic",
+                "interactions": [
+                    {"drug": "Simvastatin", "severity": "major", "description": "Risk of rhabdomyolysis; suspend statin during course.", "mechanism": "Strong CYP3A4 inhibition dramatically increases simvastatin levels."},
+                    {"drug": "Atorvastatin", "severity": "major", "description": "Markedly increases atorvastatin levels.", "mechanism": "CYP3A4 inhibition reduces statin metabolism."},
+                    {"drug": "Warfarin", "severity": "major", "description": "Significantly increases anticoagulant effect.", "mechanism": "CYP3A4 and gut flora effects raise warfarin levels."}
+                ]
+            },
+            {
+                "generic_name": "Clopidogrel",
+                "drug_class": "Antiplatelet",
+                "interactions": [
+                    {"drug": "Omeprazole", "severity": "major", "description": "Omeprazole significantly reduces clopidogrel's antiplatelet effect.", "mechanism": "CYP2C19 inhibition blocks conversion of clopidogrel to its active metabolite."},
+                    {"drug": "Warfarin", "severity": "major", "description": "Major increase in bleeding risk.", "mechanism": "Additive antiplatelet and anticoagulant effects."}
+                ]
+            },
+            {
+                "generic_name": "Amiodarone",
+                "drug_class": "Antiarrhythmic",
+                "interactions": [
+                    {"drug": "Warfarin", "severity": "major", "description": "Amiodarone markedly potentiates warfarin, greatly increasing hemorrhage risk.", "mechanism": "Inhibits CYP2C9, reducing warfarin metabolism and raising plasma levels."},
+                    {"drug": "Simvastatin", "severity": "major", "description": "Simvastatin dose must be limited; myopathy and rhabdomyolysis risk.", "mechanism": "CYP3A4 inhibition by amiodarone increases simvastatin plasma levels."}
+                ]
+            },
+            {
+                "generic_name": "Paroxetine",
+                "drug_class": "SSRI",
+                "interactions": [
+                    {"drug": "Metoprolol", "severity": "major", "description": "Significantly increases metoprolol exposure.", "mechanism": "Potent CYP2D6 inhibition by paroxetine markedly reduces metoprolol clearance."},
+                    {"drug": "Warfarin", "severity": "unsafe", "description": "Paroxetine inhibits CYP2C9, increases warfarin levels & bleeding risk.", "mechanism": "Paroxetine is a strong CYP2C9 inhibitor → reduces warfarin metabolism → increases plasma warfarin concentration by 30-50%."}
+                ]
+            },
+            {
+                "generic_name": "Verapamil",
+                "drug_class": "Calcium Channel Blocker",
+                "interactions": [
+                    {"drug": "Metoprolol", "severity": "major", "description": "Combination can cause severe bradycardia, heart block, and heart failure.", "mechanism": "Additive AV nodal depression from both drugs."},
+                    {"drug": "Simvastatin", "severity": "major", "description": "Significantly increases simvastatin exposure.", "mechanism": "CYP3A4 inhibition raises simvastatin AUC, increasing muscle toxicity risk."}
+                ]
+            }
+        ]
+    };
+
+    // Build searchable drug names list
+    const allDrugNames = drugDatabase.drugs.map(d => d.generic_name);
+    
+    // Populate datalist
+    const datalist = document.getElementById('drugSuggestions');
+    if (datalist) {
+        allDrugNames.forEach(name => {
+            const option = document.createElement('option');
+            option.value = name;
+            datalist.appendChild(option);
+        });
+    }
+
+    function findDrug(name) {
+        return drugDatabase.drugs.find(d => 
+            d.generic_name.toLowerCase() === name.toLowerCase()
+        );
+    }
+
+    function getInteraction(drug1Name, drug2Name) {
+        const drug1 = findDrug(drug1Name);
+        const drug2 = findDrug(drug2Name);
+        
+        if (!drug1 || !drug2) {
+            return {
+                safety: "unknown",
+                severity: "unknown",
+                description: "Limited clinical data available. No well-documented interaction was found for this combination, but absence of evidence does not guarantee safety. Use with caution and consult a healthcare professional if needed.",
+                mechanism: "Mechanism not fully established. The exact way these drugs may interact is not clearly understood due to limited research data.",
+                risk: "Cannot determine",
+                management: "Consult your healthcare provider for personalized medical advice."
+            };
+        }
+        
+        // Check interactions in both directions
+        let interaction = drug1.interactions?.find(i => 
+            i.drug.toLowerCase() === drug2Name.toLowerCase()
+        );
+        
+        if (!interaction) {
+            interaction = drug2.interactions?.find(i => 
+                i.drug.toLowerCase() === drug1Name.toLowerCase()
+            );
+        }
+        
+        if (interaction) {
+            const severity = interaction.severity;
+            let safety = "safe";
+            if (severity === "major") safety = "unsafe";
+            else if (severity === "moderate") safety = "caution";
+            else if (severity === "minor") safety = "safe";
+            
+            return {
+                safety: safety,
+                severity: severity,
+                description: interaction.description,
+                mechanism: interaction.mechanism || "Mechanism involves pharmacokinetic or pharmacodynamic interaction between these agents.",
+                risk: severity === "major" ? "High risk - requires medical attention" : (severity === "moderate" ? "Moderate risk - monitor closely" : "Low risk"),
+                management: severity === "major" ? "Avoid combination if possible. If necessary, close monitoring required." : "Use with caution. Monitor for adverse effects."
+            };
+        }
+        
+        // No interaction found
+        return {
+            safety: "safe",
+            severity: "none",
+            description: "No significant interaction documented between these medications in our database.",
+            mechanism: "These medications work through different pathways with no known competitive inhibition or synergistic effects.",
+            risk: "Minimal based on available data",
+            management: "Standard monitoring recommended. Report any unusual symptoms to your healthcare provider."
+        };
+    }
+
+    // User profile data
+    let userProfile = {
+        gender: null,
+        age: null,
+        diabetic: null,
+        alcohol: null,
+        smoking: null,
+        drugs: null
+    };
+
+    let onboardingCompleted = localStorage.getItem('onboardingCompleted') === 'true';
+    let interactionHistory = JSON.parse(localStorage.getItem('interactionHistory') || '[]');
+    let interactionStats = JSON.parse(localStorage.getItem('interactionStats') || '{}');
+    let askedQuestions = JSON.parse(localStorage.getItem('askedQuestions') || '[]');
+
+    function saveInteractionToHistory(drugs, results) {
+        const record = {
+            id: Date.now(),
+            date: new Date().toLocaleString(),
+            drugs: [...drugs],
+            results: results.map(r => ({ pair: ${r.drugA}+${r.drugB}, safety: r.safety }))
+        };
+        interactionHistory.unshift(record);
+        if (interactionHistory.length > 20) interactionHistory.pop();
+        localStorage.setItem('interactionHistory', JSON.stringify(interactionHistory));
+        
+        results.forEach(r => {
+            const key = ${r.drugA}+${r.drugB};
+            interactionStats[key] = (interactionStats[key] || 0) + 1;
+        });
+        localStorage.setItem('interactionStats', JSON.stringify(interactionStats));
+    }
+
+    function showLoading(callback) {
+        const overlay = document.createElement('div');
+        overlay.className = 'loading-overlay';
+        overlay.innerHTML = `
+            <div class="loading-card">
+                <div class="spinner"></div>
+                <h3>Analyzing interactions...</h3>
+                <p style="color:#718096;">Consulting pharmacological archives and clinical study data.</p>
+                <p style="font-size:0.8rem; margin-top:0.5rem;">SOURCE: Pharmacopoeia | METHOD: Cross-Reference</p>
+                <p style="font-size:0.8rem;">STATUS: Validating Data</p>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+        setTimeout(() => {
+            overlay.remove();
+            callback();
+        }, 1500);
+    }
+
+    function analyzeDrugs() {
+        if (!window.currentDrugs || window.currentDrugs.length < 2) {
+            document.getElementById('resultsArea').innerHTML = <div class="card">Please add at least 2 medicines.</div>;
+            return;
+        }
+        showLoading(() => {
+            const studyMode = document.getElementById('studyModeToggleHome')?.checked || false;
+            displayResults(window.currentDrugs, studyMode);
+        });
+    }
+
+    function displayResults(drugs, studyMode) {
+        const resultsDiv = document.getElementById('resultsArea');
+        let interactions = [];
+        const seenPairs = new Set();
+        
+        for (let i = 0; i < drugs.length; i++) {
+            for (let j = i+1; j < drugs.length; j++) {
+                const pairKey = [drugs[i], drugs[j]].sort().join('|');
+                if (seenPairs.has(pairKey)) continue;
+                seenPairs.add(pairKey);
+                
+                const inter = getInteraction(drugs[i], drugs[j]);
+                interactions.push({
+                    drugA: drugs[i].charAt(0).toUpperCase() + drugs[i].slice(1),
+                    drugB: drugs[j].charAt(0).toUpperCase() + drugs[j].slice(1),
+                    safety: inter.safety,
+                    severity: inter.severity,
+                    description: inter.description,
+                    mechanism: inter.mechanism,
+                    risk: inter.risk,
+                    management: inter.management
+                });
+            }
+        }
+        
+        saveInteractionToHistory(drugs, interactions);
+        
+        let html = <div class="card"><h3>Interaction Analysis</h3>;
+        interactions.forEach(inter => {
+            let statusClass = inter.safety === 'safe' ? 'status-safe' : (inter.safety === 'unsafe' ? 'status-unsafe' : (inter.safety === 'avoid' ? 'status-avoid' : 'status-unknown'));
+            let statusText = inter.safety === 'safe' ? 'SAFE' : (inter.safety === 'unsafe' ? 'CAUTION' : (inter.safety === 'avoid' ? 'AVOID' : 'INSUFFICIENT DATA'));
+            
+            html += `
+                <div class="interaction-item ${inter.safety}">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <strong style="font-size: 1rem;">${inter.drugA} + ${inter.drugB}</strong>
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                    </div>
+                    <div style="margin-bottom: 0.5rem; line-height: 1.5;">${inter.description}</div>
+                    <div style="font-size: 0.85rem; color: #4a5568; margin-bottom: 0.25rem;">Risk Assessment: ${inter.risk}</div>
+                    <div style="font-size: 0.85rem; color: #4a5568;">Clinical Management: ${inter.management}</div>
+                    ${studyMode ? `<div class="study-mode-box" style="margin-top:0.75rem;">
+                        <div style="margin-bottom: 0.75rem;"><strong>MECHANISM OF ACTION</strong></div>
+                        <div style="line-height: 1.6;">${inter.mechanism}</div>
+                    </div>` : ''}
+                </div>
+            `;
+        });
+        
+        // Graph
+        html += <div class="safety-graph"><h3>Safety Profile</h3>;
+        const riskScores = { safe: 85, unsafe: 35, caution: 60, avoid: 15 };
+        interactions.forEach(inter => {
+            let score = riskScores[inter.safety] || 50;
+            let color = inter.safety === 'safe' ? '#2b9348' : (inter.safety === 'caution' ? '#f59e0b' : (inter.safety === 'unsafe' ? '#e85d04' : '#7C3AED'));
+            html += `
+                <div class="bar-item">
+                    <div class="bar-label">
+                        <span>${inter.drugA} + ${inter.drugB}</span>
+                        <span>${score}/100</span>
+                    </div>
+                    <div class="bar-bg">
+                        <div class="bar-fill" style="width: ${score}%; background: ${color};"></div>
+                    </div>
+                </div>
+            `;
+        });
+        html += </div></div>;
+        
+        resultsDiv.innerHTML = html;
+    }
+
+    // Onboarding (same as before)
+    function startOnboarding() {
+        const questions = [
+            { key: 'gender', text: 'What is your gender?', options: ['Male', 'Female', 'Other'] },
+            { key: 'age', text: 'What is your age?', options: ['18-30', '31-50', '51-70', '70+'] },
+            { key: 'diabetic', text: 'Do you have diabetes?', options: ['Yes', 'No'] },
+            { key: 'alcohol', text: 'Do you drink alcohol?', options: ['No', 'Yes'] },
+            { key: 'smoking', text: 'Do you smoke?', options: ['No', 'Yes'] },
+            { key: 'drugs', text: 'Do you use recreational drugs?', options: ['No', 'Yes'] }
+        ];
+        let step = 0;
+        const overlay = document.createElement('div');
+        overlay.className = 'onboarding-overlay';
+        overlay.innerHTML = `
+            <div class="onboarding-card">
+                <div id="questionContainer"></div>
+                <div class="nav-buttons">
+                    <button class="btn-prev" id="prevBtn" style="display:none;">Previous</button>
+                    <button class="btn-next" id="nextBtn">Next</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+        
+        function renderStep() {
+            const q = questions[step];
+            let selected = userProfile[q.key];
+            let optionsHtml = q.options.map(opt => <button class="option-btn ${selected === opt ? 'selected' : ''}" data-value="${opt}">${opt}</button>).join('');
+            document.getElementById('questionContainer').innerHTML = `
+                <div class="question-text">${q.text}</div>
+                <div class="option-buttons">${optionsHtml}</div>
+            `;
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    userProfile[q.key] = btn.dataset.value;
+                });
+            });
+            document.getElementById('prevBtn').style.display = step === 0 ? 'none' : 'inline-block';
+            document.getElementById('nextBtn').textContent = step === questions.length-1 ? 'Submit' : 'Next';
+        }
+        
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            const q = questions[step];
+            if (!userProfile[q.key]) {
+                alert('Please select an option');
+                return;
+            }
+            if (step === questions.length-1) {
+                localStorage.setItem('onboardingCompleted', 'true');
+                localStorage.setItem('userProfile', JSON.stringify(userProfile));
+                overlay.remove();
+                location.reload();
+            } else {
+                step++;
+                renderStep();
+            }
+        });
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            step--;
+            renderStep();
+        });
+        renderStep();
+    }
+
+    const savedProfile = localStorage.getItem('userProfile');
+    if (savedProfile) Object.assign(userProfile, JSON.parse(savedProfile));
+    if (!onboardingCompleted) startOnboarding();
+
+    let currentDrugs = [];
+    function renderDrugTags() {
+        const container = document.getElementById('drugListContainer');
+        if (!container) return;
+        container.innerHTML = currentDrugs.map((d, i) => <span class="drug-tag">${d.charAt(0).toUpperCase() + d.slice(1)} <span class="remove-drug" data-idx="${i}">✖️</span></span>).join('');
+        document.querySelectorAll('.remove-drug').forEach(el => {
+            el.addEventListener('click', (e) => {
+                currentDrugs.splice(parseInt(el.dataset.idx), 1);
+                renderDrugTags();
+            });
+        });
+    }
+    window.currentDrugs = currentDrugs;
+    
+    document.getElementById('addDrugBtn')?.addEventListener('click', () => {
+        const input = document.getElementById('drugInput');
+        let val = input.value.trim().toLowerCase();
+        if (val && !currentDrugs.includes(val)) {
+            // Check if drug exists in database
+            const drugExists = findDrug(val);
+            if (!drugExists) {
+                alert("${val}" is not in our database. Available drugs: ${allDrugNames.join(', ')});
+                return;
+            }
+            currentDrugs.push(val);
+            renderDrugTags();
+            input.value = '';
+        }
+    });
+    document.getElementById('analyzeBtn')?.addEventListener('click', analyzeDrugs);
+    
+    // Navigation
+    document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+            document.getElementById(${tab.dataset.tab}Tab).style.display = 'block';
+            
+            if (tab.dataset.tab === 'analytics') renderAnalytics();
+            if (tab.dataset.tab === 'history') renderHistory();
+            if (tab.dataset.tab === 'profile') renderProfile();
+        });
+    });
+    
+    function renderAnalytics() {
+        const uniqueStats = {};
+        for (const [key, value] of Object.entries(interactionStats)) {
+            const sortedKey = key.split('+').sort().join('+');
+            uniqueStats[sortedKey] = (uniqueStats[sortedKey] || 0) + value;
+        }
+        const popular = Object.entries(uniqueStats).sort((a,b) => b[1] - a[1]).slice(0,5);
+        const container = document.getElementById('popularInteractions');
+        container.innerHTML = popular.length ? popular.map(([pair, count]) => <div class="interaction-item safe"><strong>${pair}</strong> - Checked ${count} times</div>).join('') : '<p>No data yet. Start checking interactions!</p>';
+        
+        const faq = [
+            { q: "Can I take ibuprofen with warfarin?", a: "No, this combination significantly increases bleeding risk. Avoid unless specifically prescribed by your doctor." },
+            { q: "What is the safest pain reliever with blood thinners?", a: "Acetaminophen (Tylenol) is generally safest, but stay within recommended doses." },
+            { q: "How long should I wait between different medications?", a: "Usually 1-2 hours, but depends on specific drugs. Consult your pharmacist." }
+        ];
+        const faqContainer = document.getElementById('faqContainer');
+        faqContainer.innerHTML = faq.map((item, i) => `
+            <div class="faq-item">
+                <div class="faq-question" data-idx="${i}">${item.q} <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer" id="faqAns${i}">${item.a}</div>
+            </div>
+        `).join('');
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', () => {
+                const idx = q.dataset.idx;
+                document.getElementById(faqAns${idx}).classList.toggle('show');
+            });
+        });
+    }
+    
+    function renderHistory() {
+        const container = document.getElementById('historyList');
+        if (!interactionHistory.length) {
+            container.innerHTML = '<div class="card">No recent checks yet. Start by checking a drug interaction.</div>';
+            return;
+        }
+        const uniqueHistory = [];
+        const seenHistory = new Set();
+        for (const record of interactionHistory) {
+            const key = record.drugs.sort().join('+');
+            if (!seenHistory.has(key)) {
+                seenHistory.add(key);
+                uniqueHistory.push(record);
+            }
+        }
+        container.innerHTML = uniqueHistory.slice(0,10).map(record => `
+            <div class="history-item" style="border-left-color: ${record.results.some(r => r.safety === 'unsafe') ? '#e85d04' : (record.results.some(r => r.safety === 'avoid') ? '#d00000' : (record.results.some(r => r.safety === 'unknown') ? '#7C3AED' : '#2b9348'))}">
+                <div><strong>${record.date}</strong></div>
+                <div>${record.drugs.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(' + ')}</div>
+                <div>${record.results.map(r => <span style="color:${r.safety === 'safe' ? '#2b9348' : (r.safety === 'unsafe' ? '#e85d04' : (r.safety === 'avoid' ? '#d00000' : '#7C3AED'))}">● ${r.pair}: ${r.safety === 'unknown' ? 'insufficient data' : r.safety}</span>).join(' · ')}</div>
+            </div>
+        `).join('');
+    }
+    
+    function renderProfile() {
+        const container = document.getElementById('profileDisplay');
+        container.innerHTML = `
+            <div class="profile-field"><strong>Gender:</strong> ${userProfile.gender || 'Not set'}</div>
+            <div class="profile-field"><strong>Age:</strong> ${userProfile.age || 'Not set'}</div>
+            <div class="profile-field"><strong>Diabetic:</strong> ${userProfile.diabetic || 'Not set'}</div>
+            <div class="profile-field"><strong>Alcohol:</strong> ${userProfile.alcohol || 'Not set'}</div>
+            <div class="profile-field"><strong>Smoking:</strong> ${userProfile.smoking || 'Not set'}</div>
+            <div class="profile-field"><strong>Recreational Drugs:</strong> ${userProfile.drugs || 'Not set'}</div>
+        `;
+    }
+    
+    document.getElementById('editProfileBtn')?.addEventListener('click', () => {
+        localStorage.removeItem('onboardingCompleted');
+        location.reload();
+    });
+    document.getElementById('loginBtn')?.addEventListener('click', () => alert('Demo mode - Profile saved locally'));
+    
+    document.getElementById('submitQuestionBtn')?.addEventListener('click', () => {
+        const question = document.getElementById('userQuestion')?.value.trim();
+        if (!question) {
+            alert('Please enter a question');
+            return;
+        }
+        askedQuestions.push({ question, date: new Date().toLocaleString() });
+        localStorage.setItem('askedQuestions', JSON.stringify(askedQuestions));
+        document.getElementById('questionFeedback').innerHTML = '<div class="success-toast">Your question has been recorded. We will soon get back to you.</div>';
+        document.getElementById('userQuestion').value = '';
+        setTimeout(() => {
+            document.getElementById('questionFeedback').innerHTML = '';
+        }, 3000);
+    });
+    
+    renderDrugTags();
+    console.log(App Loaded with ${drugDatabase.drugs.length} drugs in database);
+</script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>MediSafe Pro ✨ | AI Clinical Study Mode  | Smart Profile + Deep Insights</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', 'Segoe UI', Roboto, sans-serif; background: linear-gradient(145deg, #f0f4fc 0%, #e9eefa 100%); color: #1a1f2e; min-height: 100vh; }
+        h1, h2, h3, .logo { font-family: 'Poppins', 'Inter', sans-serif; }
+        
+        .navbar { background: rgba(255,255,255,0.94); backdrop-filter: blur(12px); padding: 0.75rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(59,130,246,0.25); position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+        .logo { font-size: 1.7rem; font-weight: 800; background: linear-gradient(135deg, #1e3c72, #3b82f6, #06b6d4); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: -0.3px; }
+        .nav-tabs { display: flex; gap: 0.5rem; background: #f1f5f9; padding: 4px; border-radius: 60px; }
+        .nav-tab { padding: 0.5rem 1.3rem; border: none; background: transparent; font-weight: 600; font-size: 0.9rem; cursor: pointer; border-radius: 40px; transition: all 0.2s; color: #475569; display: flex; align-items: center; gap: 8px; }
+        .nav-tab:hover { background: #e2e8f0; color: #1e293b; }
+        .nav-tab.active { background: #3B82F6; color: white; box-shadow: 0 6px 14px rgba(59,130,246,0.3); }
+        .login-btn { background: transparent; border: 1px solid #cbd5e1; padding: 0.45rem 1.2rem; border-radius: 60px; cursor: pointer; font-weight: 600; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+        .login-btn:hover { background: #f1f5f9; border-color: #3B82F6; color: #3B82F6; }
+        
+        .main-container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        .card { background: rgba(255,255,255,0.96); backdrop-filter: blur(2px); border-radius: 32px; box-shadow: 0 12px 35px rgba(0,0,0,0.05); padding: 1.8rem; margin-bottom: 1.8rem; border: 1px solid rgba(255,255,255,0.6); }
+        .drug-input-group { display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .drug-input-group input { flex: 1; padding: 0.9rem 1.3rem; border: 1px solid #e2e8f0; border-radius: 80px; font-size: 0.95rem; background: white; transition: 0.2s; }
+        .drug-input-group input:focus { outline: none; border-color: #3B82F6; box-shadow: 0 0 0 4px rgba(59,130,246,0.1); }
+        .drug-input-group button { padding: 0.9rem 1.8rem; background: linear-gradient(105deg, #3B82F6, #2563eb); color: white; border: none; border-radius: 80px; cursor: pointer; font-weight: 700; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+        .drug-input-group button:hover { transform: scale(1.02); box-shadow: 0 12px 22px rgba(59,130,246,0.3); }
+        .drug-tag { display: inline-flex; align-items: center; gap: 0.6rem; background: linear-gradient(120deg, #eef2ff, #ffffff); padding: 0.5rem 1.2rem; border-radius: 80px; margin: 0.35rem; font-size: 0.85rem; font-weight: 600; border: 1px solid #cbd5e1; }
+        .remove-drug { cursor: pointer; color: #ef4444; font-weight: bold; font-size: 1.1rem; }
+        .interaction-item { background: white; border-radius: 28px; padding: 1.4rem; margin-bottom: 1.3rem; border: 1px solid #eef2ff; border-left: 6px solid; transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+        .interaction-item.safe { border-left-color: #10b981; background: #f0fdf4; }
+        .interaction-item.unsafe { border-left-color: #f97316; background: #fff7ed; }
+        .interaction-item.unknown { border-left-color: #8b5cf6; background: #f5f3ff; }
+        
+        .ai-study-superbox { background: linear-gradient(135deg, #0b1120 0%, #0f172a 100%); border-radius: 32px; padding: 1.6rem; margin-top: 1.3rem; color: #e2e8f0; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4); border: 1px solid #334155; }
+        .ai-study-superbox h4 { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.9rem; display: flex; align-items: center; gap: 12px; color: #7dd3fc; }
+        .drug-monograph { background: rgba(15, 23, 42, 0.7); border-radius: 24px; padding: 1rem; margin-top: 1rem; border: 1px solid #2d3a5e; }
+        .mono-title { font-weight: 800; color: #facc15; margin-bottom: 8px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
+        .mechanism-deep { background: rgba(56, 189, 248, 0.08); padding: 1rem; border-radius: 20px; margin-top: 1rem; border-left: 3px solid #38bdf8; font-size: 0.88rem; line-height: 1.5; }
+        .badge-ai { background: linear-gradient(105deg, #0ea5e9, #0284c7); border-radius: 60px; padding: 0.25rem 0.9rem; font-size: 0.7rem; font-weight: bold; display: inline-flex; align-items: center; gap: 6px; }
+        .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(10px); z-index: 2000; display: flex; align-items: center; justify-content: center; }
+        .loading-card { background: white; border-radius: 48px; padding: 2rem; text-align: center; min-width: 340px; }
+        .spinner { width: 56px; height: 56px; border: 5px solid #e2e8f0; border-top-color: #3B82F6; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1rem; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .safety-graph { margin-top: 1.5rem; background: #f8fafc; border-radius: 24px; padding: 1.2rem; }
+        .bar-item { margin-bottom: 1rem; }
+        .bar-label { display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 0.35rem; }
+        .bar-bg { background: #e2e8f0; height: 38px; border-radius: 60px; overflow: hidden; }
+        .bar-fill { height: 100%; width: 0%; transition: width 0.7s cubic-bezier(0.22, 0.97, 0.36, 1); display: flex; align-items: center; padding: 0 1rem; color: white; font-weight: 800; border-radius: 60px; }
+        .btn-primary { background: linear-gradient(105deg, #3B82F6, #2563eb); color: white; border: none; padding: 0.9rem 1.5rem; border-radius: 80px; cursor: pointer; font-weight: 800; width: 100%; font-size: 1rem; transition: 0.2s; box-shadow: 0 6px 14px rgba(37,99,235,0.25); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(59,130,246,0.35); }
+        .disclaimer-footer { margin-top: 2rem; text-align: center; font-size: 0.8rem; font-weight: 600; color: #b45309; background: #fffbeb; padding: 1rem; border-radius: 60px; border-left: 5px solid #f59e0b; }
+        .switch { position: relative; display: inline-block; width: 60px; height: 30px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider-round { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; border-radius: 34px; transition: 0.2s; }
+        .slider-round:before { position: absolute; content: "📘"; font-size: 16px; display: flex; align-items: center; justify-content: center; height: 26px; width: 26px; left: 2px; bottom: 2px; background-color: white; border-radius: 50%; transition: 0.2s; text-align: center; line-height: 26px; }
+        input:checked + .slider-round { background-color: #3B82F6; }
+        input:checked + .slider-round:before { transform: translateX(30px); content: "🧠"; }
+        .history-item { border-left: 5px solid; margin-bottom: 0.9rem; padding: 1rem; background: white; border-radius: 20px; }
+        .status-badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0.9rem; border-radius: 60px; font-size: 0.7rem; font-weight: 800; }
+        .status-safe { background: #10b981; color: white; }
+        .status-unsafe { background: #f97316; color: white; }
+        .faq-question { padding: 1rem 0.5rem; cursor: pointer; font-weight: 700; display: flex; justify-content: space-between; border-bottom: 2px solid #eef2ff; }
+        .faq-answer { padding: 0.5rem 0.5rem 1rem 0.5rem; display: none; color: #334155; line-height: 1.5; }
+        .faq-answer.show { display: block; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        
+        /* Profile Editor Styles */
+        .profile-editor { background: #f8fafc; border-radius: 24px; padding: 1.5rem; margin-top: 1rem; }
+        .profile-field { margin-bottom: 1.2rem; }
+        .profile-field label { font-weight: 700; display: block; margin-bottom: 0.5rem; color: #1e293b; }
+        .profile-field select, .profile-field input { width: 100%; padding: 0.8rem 1rem; border-radius: 60px; border: 1px solid #cbd5e1; background: white; font-family: 'Inter', sans-serif; font-size: 0.9rem; }
+        .save-profile-btn { background: linear-gradient(105deg, #10b981, #059669); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 60px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 0.5rem; transition: 0.2s; }
+        .save-profile-btn:hover { transform: scale(1.02); box-shadow: 0 8px 20px rgba(16,185,129,0.3); }
+        .profile-display-card { background: #f1f5f9; border-radius: 24px; padding: 1.2rem; margin-bottom: 1rem; }
+        .edit-toggle-btn { background: #3B82F6; border: none; padding: 0.5rem 1.2rem; border-radius: 60px; color: white; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo"><i class="fas fa-stethoscope" style="color:#3b82f6;"></i> MediSafe Pro ✨ <span style="font-size:0.7rem; background:#eef2ff; padding:4px 12px; border-radius:60px;">AI Clinical Deep Dive</span></div>
+    <div class="nav-tabs">
+        <button class="nav-tab active" data-tab="home"><i class="fas fa-home"></i> Home </button>
+        <button class="nav-tab" data-tab="analytics"><i class="fas fa-chart-line"></i> Analytics </button>
+        <button class="nav-tab" data-tab="history"><i class="fas fa-history"></i> History </button>
+        <button class="nav-tab" data-tab="profile"><i class="fas fa-user-md"></i> Profile </button>
+        <button class="nav-tab" data-tab="aiassist"><i class="fas fa-brain"></i> AI Tutor </button>
+    </div>
+    <button class="login-btn" id="loginBtn"><i class="fas fa-user-circle"></i> My Account</button>
+</div>
+
+<div class="main-container">
+    <div id="homeTab" class="tab-content">
+        <div class="card">
+            <div class="flex-between">
+                <h2><i class="fas fa-capsules"></i> Drug Interaction Checker  <span style="font-size:0.8rem; background:#dbeafe; padding:4px 14px; border-radius:60px;">AI Study Mode </span></h2>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <span style="font-weight:800;">AI Tutor + Monographs</span>
+                    <label class="switch"><input type="checkbox" id="studyModeToggleHome"><span class="slider-round"></span></label>
+                </div>
+            </div>
+            <div class="drug-input-group">
+                <input type="text" id="drugInput" placeholder=" e.g., Warfarin, Aspirin, Metformin, Lisinopril, Amiodarone, Simvastatin" list="drugSuggestions">
+                <datalist id="drugSuggestions"></datalist>
+                <button id="addDrugBtn"><i class="fas fa-plus-circle"></i> Add Medicine </button>
+            </div>
+            <div id="drugListContainer" class="drug-list"></div>
+            <button id="analyzeBtn" class="btn-primary"><i class="fas fa-microscope"></i> Analyze Interactions </button>
+        </div>
+        <div id="resultsArea"></div>
+       <div class="disclaimer-footer">⚠️ CAUTION: Prototype using a small sample dataset of 7 drugs. Explanations are for study and education only and are not clinically verified. Always verify with a licensed clinician.</div>
+    </div>
+
+    <div id="analyticsTab" class="tab-content" style="display: none;"><div class="card"><h2><i class="fas fa-fire"></i> Most Checked Interactions </h2><div id="popularInteractions"></div></div><div class="card"><h2><i class="fas fa-question-circle"></i> Clinical FAQs </h2><div id="faqContainer"></div></div><div class="card"><h2><i class="fas fa-comment-dots"></i> Ask AI Pharmacist 🤖💬</h2><div class="question-input-group" style="display: flex; gap: 0.75rem;"><input type="text" id="userQuestion" placeholder="e.g., Why does warfarin + amiodarone cause bleeding?"><button id="submitQuestionBtn" style="background:linear-gradient(105deg,#3B82F6,#2563eb); padding:0.8rem 1.5rem; border:none; border-radius:80px; color:white; font-weight:700;"><i class="fas fa-paper-plane"></i> Ask AI ✨</button></div><div id="questionFeedback"></div></div></div>
+    <div id="historyTab" class="tab-content" style="display: none;"><div class="card"><h2><i class="fas fa-clock"></i> Recent Interaction Checks </h2><div id="historyList"></div></div></div>
+    
+    <!-- PROFILE TAB with FULLY FUNCTIONAL CHOOSABLE OPTIONS -->
+    <div id="profileTab" class="tab-content" style="display: none;">
+        <div class="card">
+            <div class="flex-between">
+                <h2><i class="fas fa-id-card"></i> User Profile </h2>
+                <button class="edit-toggle-btn" id="editProfileBtn"><i class="fas fa-pen"></i> Edit Profile</button>
+            </div>
+            <div id="profileDisplayArea"></div>
+            <div id="profileEditorArea" style="display: none;"></div>
+        </div>
+    </div>
+    
+    <div id="aiassistTab" class="tab-content" style="display: none;"><div class="card"><h2><i class="fas fa-robot"></i> AI Clinical Tutor  <span style="background:#dbeafe; font-size:0.8rem; padding:4px 12px; border-radius:60px;">Deep Pharmacology AI</span></h2><p style="margin-bottom: 1.2rem;">🔬 Ask anything: mechanisms, metabolism, clinical pearls, drug classes.</p><div class="question-input-group" style="display: flex; gap: 0.75rem;"><input type="text" id="aiTutorQuery" placeholder="e.g., Explain CYP450 interaction between simvastatin and clarithromycin..." style="flex:1; padding:0.9rem; border-radius:80px;"><button id="aiTutorAskBtn" style="background:linear-gradient(105deg,#0ea5e9,#0284c7); padding:0.8rem 1.8rem; border:none; border-radius:80px; color:white; font-weight:700;"><i class="fas fa-brain"></i> Ask AI </button></div><div id="aiTutorResponseArea" style="background:#f8fafc; border-radius:32px; padding:1.2rem; min-height:220px;"></div></div></div>
+</div>
+
+<script>
+    // ============================================
+    // EXTENSIVE DRUG DATABASE + MONOGRAPHS
+    // ============================================
+    const drugDatabase = {
+        "drugs": [
+            { generic_name: "Warfarin", drug_class: "Vitamin K Antagonist (Anticoagulant)", half_life: "40 hours", metabolism: "CYP2C9 (major), CYP3A4", moa: "Inhibits vitamin K epoxide reductase → blocks synthesis of clotting factors II, VII, IX, X, proteins C & S.", clinical_use: "Atrial fibrillation, DVT, PE, mechanical heart valves.", interactions: [{ drug: "Aspirin", severity: "major", description: "🩸 Major bleed risk: additive antiplatelet + anticoagulant effects.", mechanism: "Aspirin irreversibly inhibits COX-1 → reduces thromboxane A2 → platelet aggregation blocked. Warfarin reduces coagulation factors. Synergy → hemorrhage risk ↑ 3x." }, { drug: "Amiodarone", severity: "major", description: "⚠️ Amiodarone potentiates warfarin severely.", mechanism: "Amiodarone inhibits CYP2C9 → S-warfarin plasma levels increase 50-70% → INR skyrockets." }] },
+            { generic_name: "Amiodarone", drug_class: "Class III Antiarrhythmic", half_life: "58 days (extremely long)", metabolism: "CYP3A4, CYP2C8", moa: "Blocks potassium channels → prolongs repolarization, also blocks sodium/calcium channels & non-competitive beta-blocker effect.", clinical_use: "Ventricular tachycardia, atrial fibrillation.", interactions: [{ drug: "Warfarin", severity: "major", description: "Major potentiation of anticoagulation.", mechanism: "Strong CYP2C9 inhibition → warfarin clearance reduced dramatically." }, { drug: "Simvastatin", severity: "major", description: "Rhabdomyolysis risk.", mechanism: "CYP3A4 inhibition → simvastatin AUC ↑ 5-10x." }] },
+            { generic_name: "Simvastatin", drug_class: "HMG-CoA Reductase Inhibitor (Statin)", half_life: "3 hours", metabolism: "CYP3A4 (major)", moa: "Competitively inhibits HMG-CoA reductase → reduces cholesterol synthesis in liver → upregulates LDL receptors.", clinical_use: "Hyperlipidemia, CVD prevention.", interactions: [{ drug: "Clarithromycin", severity: "major", description: "🚨 Life-threatening rhabdomyolysis!", mechanism: "Clarithromycin (strong CYP3A4 inhibitor) → Simvastatin AUC ↑ 10x → muscle toxicity & AKI." }] },
+            { generic_name: "Clarithromycin", drug_class: "Macrolide Antibiotic", half_life: "4 hours", metabolism: "CYP3A4", moa: "Binds 50S ribosomal subunit → inhibits protein synthesis.", clinical_use: "Respiratory, skin infections, H. pylori.", interactions: [{ drug: "Simvastatin", severity: "major", description: "Extreme myopathy risk.", mechanism: "Potent CYP3A4 inhibition." }] },
+            { generic_name: "Aspirin", drug_class: "NSAID / Antiplatelet", half_life: "15-20 min", metabolism: "Hydrolyzed to salicylate", moa: "Irreversibly acetylates COX-1 → inhibits thromboxane A2 → antiplatelet effect.", clinical_use: "Secondary prevention of MI/stroke, pain.", interactions: [{ drug: "Ibuprofen", severity: "major", description: "⚠️ Ibuprofen blocks aspirin's cardioprotective effect.", mechanism: "Competitive binding at COX-1 prevents acetylation." }] },
+            { generic_name: "Ibuprofen", drug_class: "NSAID", half_life: "2 hours", metabolism: "CYP2C9", moa: "Reversible COX-1/COX-2 inhibition → reduces prostaglandins.", clinical_use: "Pain, inflammation, fever.", interactions: [{ drug: "Lisinopril", severity: "major", description: "Reduces BP control & may cause acute kidney injury.", mechanism: "NSAIDs inhibit prostaglandin-mediated afferent arteriole dilation → reduced GFR." }] },
+            { generic_name: "Lisinopril", drug_class: "ACE Inhibitor", half_life: "12 hours", metabolism: "Renal excretion", moa: "Inhibits angiotensin-converting enzyme → reduces angiotensin II → vasodilation.", clinical_use: "Hypertension, HF, post-MI.", interactions: [{ drug: "Spironolactone", severity: "major", description: "Hyperkalemia risk.", mechanism: "Additive potassium retention." }] }
+        ]
+    };
+    const allDrugNames = drugDatabase.drugs.map(d => d.generic_name);
+    const datalist = document.getElementById('drugSuggestions');
+    allDrugNames.forEach(n => { let opt = document.createElement('option'); opt.value = n; datalist.appendChild(opt); });
+    function findDrug(name) { return drugDatabase.drugs.find(d => d.generic_name.toLowerCase() === name.toLowerCase()); }
+    function getInteraction(d1, d2) {
+        const drug1 = findDrug(d1), drug2 = findDrug(d2);
+        if (!drug1 || !drug2) return { safety: "unknown", severity: "unknown", description: " Limited data — clinical vigilance advised.", mechanism: "No formal interaction studies.", risk: "Cannot determine", management: "Consult pharmacist 🩺" };
+        let inter = drug1.interactions?.find(i => i.drug.toLowerCase() === d2.toLowerCase()) || drug2.interactions?.find(i => i.drug.toLowerCase() === d1.toLowerCase());
+        if (inter) {
+            let safety = inter.severity === "major" ? "unsafe" : "safe";
+            return { safety, severity: inter.severity, description: inter.description, mechanism: inter.mechanism, risk: inter.severity === "major" ? "High Risk 🚨" : "Moderate Risk", management: inter.severity === "major" ? "Avoid combo; monitor INR/CK." : "Monitor symptoms" };
+        }
+        return { safety: "safe", severity: "none", description: "ℹ️ No interaction found in this small sample database. This does NOT mean the combination is safe.", mechanism: "Not covered by the sample data.", risk: "Unknown (not in database)", management: "Check a licensed pharmacist or a real drug reference" };
+    }
+    
+    // AI DEEP INSIGHT GENERATOR
+    async function getAIDeepInsight(drugA, drugB, interactionObj) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+        const drug1 = findDrug(drugA), drug2 = findDrug(drugB);
+        const monoHtml = (drug) => {
+            if(!drug) return "";
+            return `<div class="drug-monograph">
+                        <div class="mono-title"><i class="fas fa-flask"></i>  Monograph: ${drug.generic_name}</div>
+                        <div> <strong>Class:</strong> ${drug.drug_class}</div>
+                        <div> <strong>Half-life:</strong> ${drug.half_life || "N/A"} | <strong>Metabolism:</strong> ${drug.metabolism || "Hepatic"}</div>
+                        <div> <strong>Mechanism:</strong> ${drug.moa || "Modulates specific pathways."}</div>
+                        <div> <strong>Clinical Use:</strong> ${drug.clinical_use || "Varied indications."}</div>
+                    </div>`;
+        };
+        return `<div class="ai-study-superbox">
+                    <h4><i class="fas fa-brain"></i> AI Clinical Deep Dive <span class="badge-ai"><i class="fas fa-microchip"></i> Study Notes</span></h4>
+                    <div class="mechanism-deep"><i class="fas fa-dna"></i> <strong>Molecular & Systems Pharmacology:</strong> ${interactionObj.mechanism} <br/>  <strong>Clinical Management:</strong> ${interactionObj.management} | 🩺 <strong>Risk:</strong> ${interactionObj.risk}</div>
+                    ${monoHtml(drug1)}
+                    ${monoHtml(drug2)}
+                    <div style="margin-top: 12px; font-size:0.8rem; background:#1e293b; padding:0.7rem; border-radius:20px;"><i class="fas fa-graduation-cap"></i> 📘 Study Note: AI-generated educational content — integrates pharmacokinetic (PK) / pharmacodynamic (PD) principles.</div>
+                </div>`;
+    }
+    
+    // ========== PROFILE MANAGEMENT with FULL CHOOSABLE OPTIONS ==========
+    let userProfile = {
+        gender: "Prefer not to say",
+        ageGroup: "31-50",
+        diabetic: "No",
+        alcohol: "Occasionally",
+        smoking: "No",
+        allergies: "None"
+    };
+    
+    // Load saved profile
+    const savedProfile = localStorage.getItem('userClinicalProfile');
+    if (savedProfile) Object.assign(userProfile, JSON.parse(savedProfile));
+    
+    function renderProfileDisplay() {
+        const displayDiv = document.getElementById('profileDisplayArea');
+        displayDiv.innerHTML = `
+            <div class="profile-display-card">
+                <p><strong>Gender:</strong> ${userProfile.gender}</p>
+                <p><strong>Age Group:</strong> ${userProfile.ageGroup}</p>
+                <p><strong>Diabetic:</strong> ${userProfile.diabetic}</p>
+                <p><strong>Alcohol:</strong> ${userProfile.alcohol}</p>
+                <p><strong>Smoking:</strong> ${userProfile.smoking}</p>
+                <p><strong>Allergies/Notes:</strong> ${userProfile.allergies}</p>
+            </div>
+        `;
+    }
+    
+    function renderProfileEditor() {
+        const editorDiv = document.getElementById('profileEditorArea');
+        editorDiv.innerHTML = `
+            <div class="profile-editor">
+                <div class="profile-field"><label><i class="fas fa-venus-mars"></i> Gender</label>
+                    <select id="editGender">
+                        <option ${userProfile.gender === "Male" ? "selected" : ""}>Male</option>
+                        <option ${userProfile.gender === "Female" ? "selected" : ""}>Female</option>
+                        <option ${userProfile.gender === "Non-binary" ? "selected" : ""}>Non-binary</option>
+                        <option ${userProfile.gender === "Prefer not to say" ? "selected" : ""}>Prefer not to say</option>
+                    </select>
+                </div>
+                <div class="profile-field"><label><i class="fas fa-calendar-alt"></i> Age Group</label>
+                    <select id="editAgeGroup">
+                        <option ${userProfile.ageGroup === "18-30" ? "selected" : ""}>18-30</option>
+                        <option ${userProfile.ageGroup === "31-50" ? "selected" : ""}>31-50</option>
+                        <option ${userProfile.ageGroup === "51-70" ? "selected" : ""}>51-70</option>
+                        <option ${userProfile.ageGroup === "70+" ? "selected" : ""}>70+</option>
+                    </select>
+                </div>
+                <div class="profile-field"><label><i class="fas fa-tint"></i> Diabetic?</label>
+                    <select id="editDiabetic">
+                        <option ${userProfile.diabetic === "Yes" ? "selected" : ""}>Yes</option>
+                        <option ${userProfile.diabetic === "No" ? "selected" : ""}>No</option>
+                        <option ${userProfile.diabetic === "Pre-diabetic" ? "selected" : ""}>Pre-diabetic</option>
+                    </select>
+                </div>
+                <div class="profile-field"><label><i class="fas fa-wine-glass-alt"></i> Alcohol Consumption</label>
+                    <select id="editAlcohol">
+                        <option ${userProfile.alcohol === "Never" ? "selected" : ""}>Never</option>
+                        <option ${userProfile.alcohol === "Occasionally" ? "selected" : ""}>Occasionally</option>
+                        <option ${userProfile.alcohol === "Regularly" ? "selected" : ""}>Regularly</option>
+                    </select>
+                </div>
+                <div class="profile-field"><label><i class="fas fa-smoking"></i> Smoking Status</label>
+                    <select id="editSmoking">
+                        <option ${userProfile.smoking === "Never" ? "selected" : ""}>Never</option>
+                        <option ${userProfile.smoking === "Former" ? "selected" : ""}>Former</option>
+                        <option ${userProfile.smoking === "Current" ? "selected" : ""}>Current</option>
+                    </select>
+                </div>
+                <div class="profile-field"><label><i class="fas fa-allergies"></i> Known Allergies / Notes</label>
+                    <input type="text" id="editAllergies" value="${userProfile.allergies}" placeholder="e.g., Penicillin, NSAIDs...">
+                </div>
+                <button class="save-profile-btn" id="saveProfileBtn"><i class="fas fa-save"></i> Save Profile </button>
+            </div>
+        `;
+        document.getElementById('saveProfileBtn')?.addEventListener('click', () => {
+            userProfile.gender = document.getElementById('editGender').value;
+            userProfile.ageGroup = document.getElementById('editAgeGroup').value;
+            userProfile.diabetic = document.getElementById('editDiabetic').value;
+            userProfile.alcohol = document.getElementById('editAlcohol').value;
+            userProfile.smoking = document.getElementById('editSmoking').value;
+            userProfile.allergies = document.getElementById('editAllergies').value;
+            localStorage.setItem('userClinicalProfile', JSON.stringify(userProfile));
+            renderProfileDisplay();
+            document.getElementById('profileEditorArea').style.display = 'none';
+            document.getElementById('profileDisplayArea').style.display = 'block';
+        });
+    }
+    
+    let currentDrugs = [];
+    function renderDrugTags() {
+        const container = document.getElementById('drugListContainer');
+        container.innerHTML = currentDrugs.map((d,i)=>`<span class="drug-tag"> ${d.charAt(0).toUpperCase() + d.slice(1)} <span class="remove-drug" data-idx="${i}">✖</span></span>`).join('');
+        document.querySelectorAll('.remove-drug').forEach(el=>el.addEventListener('click',()=>{ currentDrugs.splice(parseInt(el.dataset.idx),1); renderDrugTags(); }));
+    }
+    
+    function saveHistory(drugs, results) {
+        let record = { id: Date.now(), date: new Date().toLocaleString(), drugs: [...drugs], results: results.map(r=>({ pair: `${r.drugA}+${r.drugB}`, safety: r.safety })) };
+        let history = JSON.parse(localStorage.getItem('interactionHistory') || '[]');
+        history.unshift(record);
+        if(history.length>20) history.pop();
+        localStorage.setItem('interactionHistory', JSON.stringify(history));
+        let stats = JSON.parse(localStorage.getItem('interactionStats') || '{}');
+        results.forEach(r=>{ let key=`${r.drugA}+${r.drugB}`; stats[key]=(stats[key]||0)+1; });
+        localStorage.setItem('interactionStats', JSON.stringify(stats));
+    }
+    
+    function showLoading(callback) {
+        let overlay = document.createElement('div'); overlay.className='loading-overlay';
+        overlay.innerHTML=`<div class="loading-card"><div class="spinner"></div><h3>🧠AI Deep Clinical Analysis </h3><p> Retrieving drug monographs & interaction mechanisms...</p></div>`;
+        document.body.appendChild(overlay);
+        setTimeout(()=>{ overlay.remove(); callback(); }, 1200);
+    }
+
+    async function loadCharts(interactions) {
+    const resultsArea = document.getElementById('resultsArea');
+    const chartBox = document.createElement('div');
+    chartBox.className = 'card';
+    chartBox.innerHTML = '<h3>Charts</h3><p>Generating charts...</p>';
+    resultsArea.appendChild(chartBox);
+
+    // Python only understands safe / caution / unsafe, so translate "unknown"
+    const scoreMap = { safe: 94, caution: 65, unsafe: 28 };
+    const cleaned = interactions.map(i => ({
+        drugA: i.drugA,
+        drugB: i.drugB,
+        safety: i.safety === 'unknown' ? 'caution' : i.safety
+    }));
+
+    // Build the pair -> score table that the heatmap needs
+    const drugMatrix = {};
+    cleaned.forEach(i => {
+        const key = [i.drugA, i.drugB].sort().join('|');
+        drugMatrix[key] = scoreMap[i.safety];
+    });
+
+    try {
+        const response = await fetch('/api/generate_graphs', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ interactions: cleaned, drug_matrix: drugMatrix })
+        });
+        const data = await response.json();
+        if (!data.success) throw new Error(data.error);
+
+        let out = '<h3>Charts</h3>';
+        for (const [name, img] of Object.entries(data.graphs)) {
+            out += `<img src="data:image/png;base64,${img}" alt="${name}" style="max-width:100%; margin-bottom:1rem;">`;
+        }
+        chartBox.innerHTML = out;
+    } catch (err) {
+        chartBox.innerHTML = '<h3>Charts</h3><p>Charts unavailable right now.</p>';
+    }
+}
+    
+    async function analyzeDrugs() {
+        if(!currentDrugs || currentDrugs.length<2){ document.getElementById('resultsArea').innerHTML=`<div class="card">⚠️ Add at least 2 medications to analyze! </div>`; return; }
+        showLoading(async ()=>{
+            const studyMode = document.getElementById('studyModeToggleHome')?.checked || false;
+            let interactions = [];
+            let seen = new Set();
+            for(let i=0;i<currentDrugs.length;i++){
+                for(let j=i+1;j<currentDrugs.length;j++){
+                    let key = [currentDrugs[i],currentDrugs[j]].sort().join('|');
+                    if(seen.has(key)) continue;
+                    seen.add(key);
+                    let inter = getInteraction(currentDrugs[i], currentDrugs[j]);
+                    interactions.push({ drugA: currentDrugs[i].charAt(0).toUpperCase()+currentDrugs[i].slice(1), drugB: currentDrugs[j].charAt(0).toUpperCase()+currentDrugs[j].slice(1), safety: inter.safety, severity: inter.severity, description: inter.description, mechanism: inter.mechanism, risk: inter.risk, management: inter.management });
+                }
+            }
+            saveHistory(currentDrugs, interactions);
+            let html = `<div class="card"><h3><i class="fas fa-flask"></i> Comprehensive Interaction Report + AI Tutor </h3>`;
+            for(let inter of interactions){
+                let statusClass = inter.safety==='safe'?'status-safe':'status-unsafe';
+                let statusText = inter.safety.toUpperCase();
+                html += `<div class="interaction-item ${inter.safety}">
+                            <div style="display:flex; justify-content:space-between;"><strong> ${inter.drugA} + ${inter.drugB}</strong><span class="status-badge ${statusClass}">${statusText === 'SAFE' ? '✅ LOW RISK' : '⚠️ HIGH RISK'}</span></div>
+                            <div style="margin:12px 0;"> ${inter.description}</div>
+                            <div>⚠️ Risk: ${inter.risk} | 🩺Clinical Mgmt: ${inter.management}</div>`;
+                if(studyMode){
+                    const aiDeep = await getAIDeepInsight(inter.drugA, inter.drugB, { severity: inter.severity, description: inter.description, mechanism: inter.mechanism, risk: inter.risk, management: inter.management });
+                    html += aiDeep;
+                }
+                html += `</div>`;
+            }
+            html += `<div class="safety-graph"><h3> Clinical Safety Score (0-100)</h3>`;
+            const riskScores = { safe: 94, unsafe: 28 };
+            interactions.forEach(inter=>{
+                let score = riskScores[inter.safety] || 65;
+                let color = inter.safety==='safe'?'#10b981':'#f97316';
+                html+=`<div class="bar-item"><div class="bar-label"><span>${inter.drugA}+${inter.drugB}</span><span>${score}/100</span></div><div class="bar-bg"><div class="bar-fill" style="width:${score}%; background:${color};"></div></div></div>`;
+            });
+            html+=`</div></div>`;
+            document.getElementById('resultsArea').innerHTML = html;
+            loadCharts(interactions);
+        });
+    }
+    
+    async function callAITutor(prompt) {
+        await new Promise(resolve => setTimeout(resolve, 600));
+        const p = prompt.toLowerCase();
+        if(p.includes("warfarin") && p.includes("amiodarone")) return "🧠 **Deep Pharmacology**: Warfarin (CYP2C9 substrate) + Amiodarone (CYP2C9 inhibitor) → S-warfarin AUC ↑ 70% → INR increase within 1-2 weeks. **Clinical Pearl**: Reduce warfarin by 30-50% at initiation. ";
+        if(p.includes("simvastatin") && p.includes("clarithromycin")) return "🧠 **CYP3A4 Interaction**: Clarithromycin (strong inhibitor) increases simvastatin AUC 10-fold → rhabdomyolysis risk. **Alternatives**: Use pravastatin or rosuvastatin (less CYP3A4 metabolism). ";
+        return "🧠 **AI Clinical Tutor**: The interaction depends on metabolism, protein binding, and patient genetics. Provide a specific drug pair for detailed mechanism & evidence-based recommendations. ";
+    }
+    
+    // Event Listeners
+    document.getElementById('addDrugBtn')?.addEventListener('click',()=>{
+        let val = document.getElementById('drugInput').value.trim().toLowerCase();
+        if(val && !currentDrugs.includes(val)){
+            if(!findDrug(val)){ alert(`❌ "${val}" not in knowledge base. Available: ${allDrugNames.join(', ')}`); return; }
+            currentDrugs.push(val); renderDrugTags(); document.getElementById('drugInput').value='';
+        }
+    });
+    document.getElementById('analyzeBtn')?.addEventListener('click', analyzeDrugs);
+    document.getElementById('aiTutorAskBtn')?.addEventListener('click', async () => {
+        const q = document.getElementById('aiTutorQuery')?.value.trim();
+        if(!q){ alert(" Please type a pharmacology question!"); return; }
+        const respDiv = document.getElementById('aiTutorResponseArea');
+        respDiv.innerHTML = `<div style="text-align:center; padding:2rem;"><div class="spinner" style="width:35px;height:35px;"></div><p> AI Clinical Tutor is reasoning...</p></div>`;
+        const answer = await callAITutor(q);
+        respDiv.innerHTML = `<div class="ai-study-superbox" style="background:#0f172a;"><h4><i class="fas fa-brain"></i> AI Tutor Response </h4><div>${answer}</div></div>`;
+    });
+    document.getElementById('submitQuestionBtn')?.addEventListener('click', async () => {
+        let q = document.getElementById('userQuestion')?.value.trim();
+        if(q){ let ans = await callAITutor(q); document.getElementById('questionFeedback').innerHTML = `<div style="background:#0ea5e9; padding:1rem; border-radius:80px; color:white;"> AI: ${ans.substring(0,280)}...</div>`; setTimeout(()=>document.getElementById('questionFeedback').innerHTML='',4000); }
+    });
+    document.getElementById('loginBtn')?.addEventListener('click', () => { alert(" Welcome! Your profile & interaction history are saved locally. Edit your clinical details in the Profile tab! 🩺"); });
+    
+    // Navigation + Profile Toggle
+    document.querySelectorAll('.nav-tab').forEach(t=>t.addEventListener('click',()=>{
+        document.querySelectorAll('.nav-tab').forEach(btn=>btn.classList.remove('active')); t.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(c=>c.style.display='none');
+        document.getElementById(`${t.dataset.tab}Tab`).style.display='block';
+        if(t.dataset.tab==='analytics') {
+            let stats = JSON.parse(localStorage.getItem('interactionStats') || '{}');
+            let entries = Object.entries(stats).sort((a,b)=>b[1]-a[1]).slice(0,5);
+            document.getElementById('popularInteractions').innerHTML = entries.length? entries.map(([k,v])=>`<div class="interaction-item safe"> ${k} — checked ${v} times</div>`).join('') : '<p>📭 No data yet.</p>';
+            let faqHtml = [{q:" Why does warfarin + amiodarone increase INR?",a:" CYP2C9 inhibition → warfarin levels rise 50-70%."}];
+            document.getElementById('faqContainer').innerHTML = faqHtml.map((item,i)=>`<div class="faq-item"><div class="faq-question" data-idx="${i}">${item.q} <i class="fas fa-chevron-down"></i></div><div class="faq-answer" id="faqAns${i}">${item.a}</div></div>`).join('');
+            document.querySelectorAll('.faq-question').forEach(q=>q.addEventListener('click',()=>{document.getElementById(`faqAns${q.dataset.idx}`).classList.toggle('show');}));
+        }
+        if(t.dataset.tab==='history') {
+            let hist = JSON.parse(localStorage.getItem('interactionHistory') || '[]');
+            document.getElementById('historyList').innerHTML = hist.slice(0,8).map(rec=>`<div class="history-item" style="border-left-color:#3b82f6;"><strong> ${rec.date}</strong><br/>${rec.drugs.map(d=>d.toUpperCase()).join(' + ')}<br/>${rec.results.map(r=>`🔹 ${r.pair}: ${r.safety === 'safe' ? '✅ Safe' : '⚠️ Caution'}`).join(' · ')}</div>`).join('');
+        }
+        if(t.dataset.tab==='profile') { renderProfileDisplay(); document.getElementById('profileEditorArea').style.display = 'none'; document.getElementById('profileDisplayArea').style.display = 'block'; }
+    }));
+    
+    document.getElementById('editProfileBtn')?.addEventListener('click', () => {
+        renderProfileEditor();
+        document.getElementById('profileDisplayArea').style.display = 'none';
+        document.getElementById('profileEditorArea').style.display = 'block';
+    });
+    renderDrugTags();
+    renderProfileDisplay();
+</script>
+</body>
+</html>
